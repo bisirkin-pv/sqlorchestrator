@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlorc-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlorc-server
+  template:
+    metadata:
+      labels:
+        app: sqlorc-server
+    spec:
+      containers:
+        - name: server
+          image: sqlorchestrator:1.1
+          ports:
+          - containerPort: 3001
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      imagePullSecrets:
+        - name: regcred
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlorc-web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlorc-web-server
+  template:
+    metadata:
+      labels:
+        app: sqlorc-web-server
+    spec:
+      containers:
+        - name: web-server
+          image: websqlorchestrator:1.1
+          ports:
+          - containerPort: 8088
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8088
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      imagePullSecrets:
+        - name: regcred
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sqlorc-server-service
+spec:
+  selector:
+    app: sqlorc-server
+  ports:
+    - protocol: TCP
+      port: 3001
+  type: NodePort
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sqlorc-web-service
+spec:
+  selector:
+    app: sqlorc-web-server
+  ports:
+    - protocol: TCP
+      port: 8088
+  type: NodePort
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sqlorc-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: sqlorc.k8s.home.ru
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sqlorc-web-service
+          servicePort: 8088
+  - host: api.sqlorc.k8s.home.ru
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sqlorc-server-service
+          servicePort: 3001

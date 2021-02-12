@@ -1,0 +1,42 @@
+.hidden{
+    display: none;
+}
+.is-added{
+    color: #228B22;
+}
+.is-deleted{
+    color: #FF4500;
+}
+.is-rename{
+    color: #DAA520;
+}
+.cb-file-column{
+    width: 30px;
+    padding: 8px 12px;
+    display: inline-block;
+}
+.cb-body-column{
+    width: calc(100% - 103px);
+    display: inline-block;
+    padding-left: 15px;
+}
+.cb-link-column, cb-result-column{
+    width: 30px;
+    text-align: center;
+    display: inline-block;
+}
+#mr_ul_files li{
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+#mr_table_files{
+    margin-bottom: 5px;
+}
+
+.text-overflow{
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    padding: 5px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    width: 450px;
+}

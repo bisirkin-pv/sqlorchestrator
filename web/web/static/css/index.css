@@ -1,0 +1,32 @@
+.message-footer{
+    padding: 5px 24px;
+}
+.project-block{
+    max-width: 400px;
+    min-width: 300px;
+}
+
+.clear-margin-bottom{
+    margin-bottom: 0px!important;
+}
+
+.columns{
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.column{
+    flex-grow: 0;
+}
+
+div.level-item.caption{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    width: 100%;
+}
+
+div.level-right.caption{
+    justify-content: flex-start;
+    width: calc(100% - 70px);
+}

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    image: "websqlorchestrator:1.1"
+    ports:
+      - "8088:8088"
+    links:
+      - api
+  api:
+    image: "sqlorchestrator:1.1"
+    ports:
+      - "3001:3001"
+  prometheus:
+    image: "prometheus:1.0"
+    ports:
+      - "9090:9090"
